@@ -1,0 +1,17 @@
+User Story 0000a
+
+New Django Project
+
+As a project manager I want a new django project development environment so I can initiate development on future stories.
+
+Acceptance Criteria
+
+1. Django App using the highest version of django 2 available
+2. A docker and docker-compose management framework
+   `docker-compose up` should run dev server from the root of this repository.
+3. Requirements file managing python requirements
+4. PostGRE database backend
+5. Data should be volumed and persistant.
+6. The front end should be html and plain-ol-js (for now)
+7. A volumed directory for media files.
+
