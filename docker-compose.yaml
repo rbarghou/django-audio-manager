@@ -12,6 +12,8 @@ services:
       - DB_USER
       - DB_PASSWORD
       - DB_NAME
+      - DB_HOST
+      - DB_PORT
     volumes:
       - ./django_audio_manager:/app
       - ./media:/app/media
