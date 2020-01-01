@@ -1,0 +1,5 @@
+Epic 00 - Set up Development Environment
+
+This epic is focused on creating a development environment and setting up all the underlying technologies that will be used in this product.
+
+This is approximately like setting up a project template for a typical django-rest / react application.
