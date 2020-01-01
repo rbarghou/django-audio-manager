@@ -7,8 +7,7 @@ RUN apt-get update \
 
 RUN mkdir /app
 WORKDIR /app
-COPY ./django_admin_manager /app
+COPY ./django_audio_manager /app
 
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
-

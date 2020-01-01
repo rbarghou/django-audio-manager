@@ -1,5 +1,5 @@
 """
-WSGI config for django_admin_manager project.
+WSGI config for django_audio_manager project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_admin_manager.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_audio_manager.settings')
 
 application = get_wsgi_application()

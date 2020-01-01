@@ -13,7 +13,7 @@ services:
       - DB_PASSWORD
       - DB_NAME
     volumes:
-      - ./django_admin_manager:/app
+      - ./django_audio_manager:/app
       - ./media:/app/media
     ports:
       - 8000:8000
