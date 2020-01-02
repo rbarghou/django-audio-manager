@@ -1,0 +1,10 @@
+EP00-US02 - Add React and REST
+
+As a product owner I want the front end and back end separated so that I can use modern development processes.
+
+Acceptance Criteria:
+1. There is a react application folder for the front end.
+  a. There is a separate Dockerfile for the react application
+2. There is a react service launched by the `docker-compose up` command
+3. The Django Rest Framework is installed in the django app.
+4. Django JWT is installed and configured with the Django Rest Framework
