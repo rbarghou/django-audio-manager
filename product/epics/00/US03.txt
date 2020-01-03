@@ -1,0 +1,7 @@
+EP00-US03 - Add landing page
+
+As an AnonymousUser I want to see a landing page that provides basic information about this application so that I can decide if I want to use it.
+
+Acceptance Criteria:
+1. The page should use a modern style (i.e. Bootstrap)
+2. The page should provide the logo and all relevant copy (to be provided later)
