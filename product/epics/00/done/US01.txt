@@ -14,4 +14,3 @@ Acceptance Criteria
 5. Data should be volumed and persistant.
 6. The front end should be html and plain-ol-js (for now)
 7. A volumed directory for media files.
-
