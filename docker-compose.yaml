@@ -1,19 +1,24 @@
-version: '3.7'
+version: "3.7"
 
 services:
   db:
     image: postgres
     volumes:
       - djm-db:/var/lib/postgresql
-  web:
-    build: .
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+
+  backend:
+    build: ./django_audio_manager
     command: python manage.py runserver 0.0.0.0:8000
     environment:
-      - DB_USER
-      - DB_PASSWORD
-      - DB_NAME
-      - DB_HOST
-      - DB_PORT
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST
+      - POSTGRES_PORT
     volumes:
       - ./django_audio_manager:/app
       - ./media:/app/media
@@ -21,6 +26,12 @@ services:
       - 8000:8000
     depends_on:
       - db
+
+  frontend:
+    build: ./django_audio_manager_frontend
+    command: npm start
+    ports:
+      - 3000:3000
 
 volumes:
   djm-db:
