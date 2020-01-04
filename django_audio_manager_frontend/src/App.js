@@ -1,30 +1,36 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Row from "react-bootstrap/Row";
+import React, { Component } from 'react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Chart } from 'react-chartjs-2';
+import { ThemeProvider } from '@material-ui/styles';
+import validate from 'validate.js';
 
-import Navbar from "./components/navbar";
+import { chartjs } from './helpers';
+import theme from './theme';
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import './assets/scss/index.scss';
+import validators from './common/validators';
+import Routes from './Routes';
 
-function App() {
-  return (
-    <React.Fragment>
-      <Navbar></Navbar>
-      <div className="App container-fluid">
-        <Row>
-          <img src={logo} className="App-logo" alt="logo" />
-          <div className="col text-justify text-primary bg-info p-4 m-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </div>
-        </Row>
-      </div>
-    </React.Fragment>
-  );
+const browserHistory = createBrowserHistory();
+
+Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
+  draw: chartjs.draw
+});
+
+validate.validators = {
+  ...validate.validators,
+  ...validators
+};
+
+export default class App extends Component {
+  render() {
+    return (
+      <ThemeProvider theme={theme}>
+        <Router history={browserHistory}>
+          <Routes />
+        </Router>
+      </ThemeProvider>
+    );
+  }
 }
-
-export default App;
