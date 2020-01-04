@@ -1,6 +1,13 @@
 version: "3.7"
 
 services:
+  reverse-proxy:
+    image: nginx:1.17.6
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+
   db:
     image: postgres
     volumes:
@@ -22,16 +29,16 @@ services:
     volumes:
       - ./django_audio_manager:/app
       - ./media:/app/media
-    ports:
-      - 8000:8000
+    # ports:
+    # - 8000:8000
     depends_on:
       - db
 
   frontend:
     build: ./django_audio_manager_frontend
     command: npm start
-    ports:
-      - 3000:3000
+    # ports:
+    # - 3000:3000
     volumes:
       - ./django_audio_manager_frontend:/app
 
