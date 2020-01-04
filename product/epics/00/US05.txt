@@ -1,0 +1,20 @@
+EP00-US05 - Add Registration and Login
+
+As a user I want to register for an account and log in so I can begin using this service.
+
+Acceptance Criteria
+
+1. The landing page of the app has a link to a login and a registration page
+2. The registration page allows me to submit registration information
+   (Two step is preferred, but one step is acceptable)
+3. The login page accepts credentials for login.
+4. When I submit correct credentials, I'm redirected to a user profile page with
+   my user information populated
+5. When I submit incorrect credentials, I'm provided feedback on the login page
+6. When I logout I'm redirected to the landing page with no user information populated.
+
+Pages:
+- landing
+- registration
+- log-in
+- user-profile
