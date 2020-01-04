@@ -32,6 +32,8 @@ services:
     command: npm start
     ports:
       - 3000:3000
+    volumes:
+      - ./django_audio_manager_frontend:/app
 
 volumes:
   djm-db:
