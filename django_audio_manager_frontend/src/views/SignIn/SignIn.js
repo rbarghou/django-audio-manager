@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
@@ -16,9 +17,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
-  email: {
+  username: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
     length: {
       maximum: 64
     }
@@ -118,6 +118,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
+  console.log(Cookies);
+
   const { history } = props;
 
   const classes = useStyles();
@@ -132,11 +134,13 @@ const SignIn = props => {
   useEffect(() => {
     const errors = validate(formState.values, schema);
 
-    setFormState(formState => ({
-      ...formState,
-      isValid: errors ? false : true,
-      errors: errors || {}
-    }));
+    setFormState(formState => {
+      return {
+        ...formState,
+        isValid: errors ? false : true,
+        errors: errors || {}
+      };
+    });
   }, [formState.values]);
 
   const handleBack = () => {
@@ -164,11 +168,27 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    var formData = new FormData();
+    formData.append('username', formState.values['username']);
+    formData.append('password', formState.values['password']);
+    formData.append('csrfmiddlewaretoken', Cookies.get('csrftoken'));
+    fetch('/api/auth/login/', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (response.ok) {
+        history.push('/dashboard');
+      } else {
+        alert('DANGER WILL ROBINSON!');
+      }
+    });
   };
 
-  const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+  const hasError = field => {
+    const x =
+      formState.touched[field] && formState.errors[field] ? true : false;
+    return x;
+  };
 
   return (
     <div className={classes.root}>
@@ -189,16 +209,16 @@ const SignIn = props => {
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  error={hasError('username')}
                   fullWidth
                   helperText={
-                    hasError('email') ? formState.errors.email[0] : null
+                    hasError('username') ? formState.errors.username[0] : null
                   }
-                  label="Email address"
-                  name="email"
+                  label="Username"
+                  name="username"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.email || ''}
+                  value={formState.values.username || ''}
                   variant="outlined"
                 />
                 <TextField
