@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 import {
   Budget,
@@ -19,14 +21,27 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dashboard = () => {
+const Dashboard = props => {
   const classes = useStyles();
 
+  const { isAuthenticated } = props;
   return (
     <div className={classes.root}>
+      <Typography>
+        isAuthenticated: {!isAuthenticated ? 'Unauthenticated' : 'Logged In'}
+      </Typography>
       <Grid container spacing={4}></Grid>
     </div>
   );
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  history: PropTypes.object,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => {
+  return { isAuthenticated: state.auth.isAuthenticated };
+};
+
+export default connect(mapStateToProps)(Dashboard);

@@ -11,7 +11,6 @@ import {
   Link,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const mainText = 'Django Audio Manager';
 const bodyText = `

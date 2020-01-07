@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -42,16 +44,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const {
+    open,
+    variant,
+    onClose,
+    className,
+    isAuthenticated,
+    dispatch,
+    staticContext,
+    ...rest
+  } = props;
 
   const classes = useStyles();
 
   const pages = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <DashboardIcon />
-    },
+    ...(isAuthenticated
+      ? [
+          {
+            title: 'Dashboard',
+            href: '/dashboard',
+            icon: <DashboardIcon />
+          },
+          {
+            title: 'Sign Out',
+            href: '/sign-out',
+            icon: <PersonIcon />
+          }
+        ]
+      : []),
     // {
     //   title: 'Users',
     //   href: '/users',
@@ -62,16 +82,20 @@ const Sidebar = props => {
     //   href: '/products',
     //   icon: <ShoppingBasketIcon />
     // },
-    {
-      title: 'Sign In',
-      href: '/sign-in',
-      icon: <PersonIcon />
-    },
-    {
-      title: 'Sign Up',
-      href: '/sign-up',
-      icon: <PersonAddIcon />
-    }
+    ...(!isAuthenticated
+      ? [
+          {
+            title: 'Sign In',
+            href: '/sign-in',
+            icon: <PersonIcon />
+          },
+          {
+            title: 'Sign Up',
+            href: '/sign-up',
+            icon: <PersonAddIcon />
+          }
+        ]
+      : [])
 
     // {
     //   title: 'Typography',
@@ -115,7 +139,13 @@ Sidebar.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
-  variant: PropTypes.string.isRequired
+  variant: PropTypes.string.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default Sidebar;
+const mapStateToProps = state => ({
+  ...state,
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default withRouter(connect(mapStateToProps)(Sidebar));

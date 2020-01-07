@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Grid,
-  Button,
-  IconButton,
-  TextField,
-  Link,
-  Typography
-} from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import { Grid, Button, TextField, Link, Typography } from '@material-ui/core';
+import { login } from '../../actions/auth';
+import { useAlert } from 'react-alert';
+import Cookies from 'js-cookie';
 
 const schema = {
   username: {
@@ -118,9 +111,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-  console.log(Cookies);
+  const alert = useAlert();
 
-  const { history } = props;
+  const { history, login, isAuthenticated } = props;
+  if (isAuthenticated) {
+    history.push('/');
+  }
 
   const classes = useStyles();
 
@@ -143,10 +139,6 @@ const SignIn = props => {
     });
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
-
   const handleChange = event => {
     event.persist();
 
@@ -168,20 +160,12 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    var formData = new FormData();
-    formData.append('username', formState.values['username']);
-    formData.append('password', formState.values['password']);
-    formData.append('csrfmiddlewaretoken', Cookies.get('csrftoken'));
-    fetch('/api/auth/login/', {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (response.ok) {
-        history.push('/dashboard');
-      } else {
-        alert('DANGER WILL ROBINSON!');
-      }
-    });
+    login(
+      formState.values['username'],
+      formState.values['password'],
+      Cookies.get('csrftoken')
+    );
+    history.push('/dashboard');
   };
 
   const hasError = field => {
@@ -261,7 +245,13 @@ const SignIn = props => {
 };
 
 SignIn.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
-export default withRouter(SignIn);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default withRouter(connect(mapStateToProps, { login })(SignIn));
