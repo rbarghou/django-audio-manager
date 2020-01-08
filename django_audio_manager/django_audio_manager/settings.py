@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_registration",
 ]
 
 MIDDLEWARE = [
@@ -132,4 +133,16 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework.authentication.SessionAuthentication',
     ],
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_URL':
+        'http://localhost/api/auth/verify-registration/',
+    'RESET_PASSWORD_VERIFICATION_URL':
+        'http://localhost/api/auth/reset-password/',
+    'REGISTER_EMAIL_VERIFICATION_URL':
+        'http://localhost/api/auth/verify-email/',
+    'VERIFICATION_FROM_EMAIL': 'no-reply@example.com',
 }

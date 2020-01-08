@@ -4,7 +4,9 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGGING_IN,
-  LOGOUT
+  LOGOUT,
+  REGISTER,
+  VERIFY_REGISTRATION
 } from '../actions/types';
 
 const initialState = {
@@ -56,7 +58,12 @@ export default function(state = initialState, action) {
         isAuthenticated: false,
         username: null
       };
-
+    case REGISTER:
+      return state;
+    case VERIFY_REGISTRATION:
+      return state;
+    case VERIFY_REGISTRATION_FAILED:
+      return state;
     default:
       return state;
   }

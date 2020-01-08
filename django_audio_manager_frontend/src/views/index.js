@@ -7,6 +7,7 @@ export { default as Settings } from './Settings';
 export { default as SignIn } from './SignIn';
 export { default as SignUp } from './SignUp';
 export { default as SignOut } from './SignOut';
+export { default as VerifyRegistration } from './VerifyRegistration';
 export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
 export { default as Landing } from './Landing';

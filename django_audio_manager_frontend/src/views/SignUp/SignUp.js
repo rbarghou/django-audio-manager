@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signUp } from '../../actions/auth';
+import Cookies from 'js-cookie';
+
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
@@ -16,6 +20,12 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
+  username: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
   firstName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
@@ -35,11 +45,18 @@ const schema = {
       maximum: 64
     }
   },
-  password: {
+  password1: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 128
     }
+  },
+  password2: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 128
+    },
+    equality: 'password1'
   },
   policy: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -142,7 +159,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = props => {
-  const { history } = props;
+  const { history, signUp } = props;
 
   const classes = useStyles();
 
@@ -188,6 +205,17 @@ const SignUp = props => {
 
   const handleSignUp = event => {
     event.preventDefault();
+    console.log(formState.values);
+    signUp(
+      formState.values['username'],
+      formState.values['firstName'],
+      formState.values['lastName'],
+      formState.values['email'],
+      formState.values['password1'],
+      formState.values['password2'],
+      Cookies.get('csrftoken'),
+      history
+    );
     history.push('/');
   };
 
@@ -211,6 +239,20 @@ const SignUp = props => {
                 <Typography className={classes.title} variant="h2">
                   Create new account
                 </Typography>
+                <TextField
+                  className={classes.textField}
+                  error={hasError('username')}
+                  fullWidth
+                  helperText={
+                    hasError('username') ? formState.errors.username[0] : null
+                  }
+                  label="Username"
+                  name="username"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.username || ''}
+                  variant="outlined"
+                />
                 <TextField
                   className={classes.textField}
                   error={hasError('firstName')}
@@ -255,18 +297,33 @@ const SignUp = props => {
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('password')}
+                  error={hasError('password1')}
                   fullWidth
                   helperText={
-                    hasError('password') ? formState.errors.password[0] : null
+                    hasError('password1') ? formState.errors.password1[0] : null
                   }
                   label="Password"
-                  name="password"
+                  name="password1"
                   onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
+                  type="password1"
+                  value={formState.values.password1 || ''}
                   variant="outlined"
                 />
+                <TextField
+                  className={classes.textField}
+                  error={hasError('password2')}
+                  fullWidth
+                  helperText={
+                    hasError('password2') ? formState.errors.password2[0] : null
+                  }
+                  label="Verify Password"
+                  name="password2"
+                  onChange={handleChange}
+                  type="password2"
+                  value={formState.values.password2 || ''}
+                  variant="outlined"
+                />
+
                 <div className={classes.policy}>
                   <Checkbox
                     checked={formState.values.policy || false}
@@ -321,7 +378,10 @@ const SignUp = props => {
 };
 
 SignUp.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  signUp: PropTypes.func.isRequired
 };
 
-export default withRouter(SignUp);
+const mapStateToProps = state => ({});
+
+export default withRouter(connect(mapStateToProps, { signUp })(SignUp));

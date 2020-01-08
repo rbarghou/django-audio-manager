@@ -15,6 +15,7 @@ import {
   SignUp as SignUpView,
   SignIn as SignInView,
   SignOut as SignOutView,
+  VerifyRegistration as VerifyRegistrationView,
   NotFound as NotFoundView,
   Landing as LandingView
 } from './views';
@@ -88,6 +89,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/sign-out"
+      />
+      <RouteWithLayout
+        component={VerifyRegistrationView}
+        exact
+        layout={MainLayout}
+        path="/verify-registration"
       />
       <RouteWithLayout
         component={NotFoundView}
