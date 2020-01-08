@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
+
+import { getProfile } from '../../actions/auth';
 
 import { Sidebar, Topbar, Footer } from './components';
 
@@ -23,7 +27,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { children } = props;
+  const { children, getProfile } = props;
+  useEffect(() => {
+    getProfile();
+  });
 
   const classes = useStyles();
   const theme = useTheme();
@@ -48,8 +55,7 @@ const Main = props => {
       className={clsx({
         [classes.root]: true,
         [classes.shiftContent]: isDesktop
-      })}
-    >
+      })}>
       <Topbar onSidebarOpen={handleSidebarOpen} />
       <Sidebar
         onClose={handleSidebarClose}
@@ -65,7 +71,10 @@ const Main = props => {
 };
 
 Main.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  getProfile: PropTypes.func.isRequired
 };
 
-export default Main;
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, { getProfile })(Main);

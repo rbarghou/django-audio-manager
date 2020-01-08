@@ -4,7 +4,9 @@ import {
   LOGOUT,
   REGISTER,
   VERIFY_REGISTRATION,
-  VERIFY_REGISTRATION_FAILED
+  VERIFY_REGISTRATION_FAILED,
+  GETTING_PROFILE,
+  RECEIVED_PROFILE
 } from './types';
 
 export const verifyRegistration = (
@@ -95,4 +97,25 @@ export const login = (username, password, token) => dispatch => {
       }
     })
     .catch(console.log);
+};
+
+export const getProfile = () => dispatch => {
+  dispatch({
+    type: GETTING_PROFILE
+  });
+  fetch('/api/profile', {
+    method: 'GET'
+  })
+    .then(response => response.json())
+    .then(data => {
+      const { username, firstname, lastname, email, is_authenticated } = data;
+      dispatch({
+        type: RECEIVED_PROFILE,
+        username: username,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        is_authenticated: is_authenticated
+      });
+    });
 };

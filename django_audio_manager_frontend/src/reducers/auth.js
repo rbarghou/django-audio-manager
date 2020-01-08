@@ -7,15 +7,16 @@ import {
   LOGOUT,
   REGISTER,
   VERIFY_REGISTRATION,
-  VERIFY_REGISTRATION_FAILED
+  VERIFY_REGISTRATION_FAILED,
+  GETTING_PROFILE,
+  RECEIVED_PROFILE
 } from '../actions/types';
 
 const initialState = {
   token: localStorage.getItem('token'),
-  isAuthenticated: localStorage.getItem('isAuthenticated')
-    ? localStorage.getItem('isAuthenticated').toLowerCase() == 'true'
-    : false,
-  username: localStorage.getItem('username')
+  isAuthenticated: false,
+  username: null,
+  firstname: null
 };
 
 export default function(state = initialState, action) {
@@ -42,8 +43,6 @@ export default function(state = initialState, action) {
         isLoading: false
       };
     case LOGIN_SUCCESS:
-      localStorage.setItem('isAuthenticated', true);
-      localStorage.setItem('username', action.username);
       return {
         ...state,
         isAuthenticated: true,
@@ -52,8 +51,6 @@ export default function(state = initialState, action) {
     case LOGGING_IN:
       return state;
     case LOGOUT:
-      localStorage.setItem('isAuthenticated', false);
-      localStorage.setItem('username', null);
       return {
         ...state,
         isAuthenticated: false,
@@ -65,6 +62,17 @@ export default function(state = initialState, action) {
       return state;
     case VERIFY_REGISTRATION_FAILED:
       return state;
+    case GETTING_PROFILE:
+      return state;
+    case RECEIVED_PROFILE:
+      return {
+        ...state,
+        username: action.username,
+        firstname: action.firstname,
+        lastname: action.lastname,
+        email: action.email,
+        isAuthenticated: action.is_authenticated
+      };
     default:
       return state;
   }
