@@ -6,7 +6,8 @@ import {
   LOGGING_IN,
   LOGOUT,
   REGISTER,
-  VERIFY_REGISTRATION
+  VERIFY_REGISTRATION,
+  VERIFY_REGISTRATION_FAILED
 } from '../actions/types';
 
 const initialState = {
