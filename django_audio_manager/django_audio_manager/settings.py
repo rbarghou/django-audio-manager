@@ -98,9 +98,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
 ]
 
 
@@ -131,18 +131,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        'rest_framework.authentication.SessionAuthentication',
+        "rest_framework.authentication.SessionAuthentication",
     ],
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 REST_REGISTRATION = {
-    'REGISTER_VERIFICATION_URL':
-        'http://localhost/api/auth/verify-registration/',
-    'RESET_PASSWORD_VERIFICATION_URL':
-        'http://localhost/api/auth/reset-password/',
-    'REGISTER_EMAIL_VERIFICATION_URL':
-        'http://localhost/api/auth/verify-email/',
-    'VERIFICATION_FROM_EMAIL': 'no-reply@example.com',
+    "REGISTER_VERIFICATION_URL": "http://localhost/api/auth/verify-registration/",
+    "RESET_PASSWORD_VERIFICATION_URL": "http://localhost/api/auth/reset-password/",
+    "REGISTER_EMAIL_VERIFICATION_URL": "http://localhost/api/auth/verify-email/",
+    "VERIFICATION_FROM_EMAIL": "no-reply@example.com",
 }
