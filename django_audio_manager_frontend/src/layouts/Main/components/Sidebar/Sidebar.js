@@ -127,7 +127,7 @@ const Sidebar = props => {
       open={open}
       variant={variant}>
       <div {...rest} className={clsx(classes.root, className)}>
-        <Profile />
+        {isAuthenticated && <Profile />}
         <Divider className={classes.divider} />
         <SidebarNav className={classes.nav} pages={pages} />
       </div>
