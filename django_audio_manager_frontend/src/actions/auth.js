@@ -41,7 +41,8 @@ export const signUp = (
   password1,
   password2,
   token,
-  history
+  history,
+  alert
 ) => dispatch => {
   dispatch({ type: REGISTER });
   fetch('/api/auth/register/', {
@@ -54,8 +55,11 @@ export const signUp = (
       email: email,
       password: password1,
       password_confirm: password2
-      // csrfmiddlewaretoken: token
     })
+  }).then(response => {
+    if (response.ok) {
+      history.push('/signup-complete');
+    }
   });
 };
 
@@ -73,7 +77,13 @@ export const logout = (token, history) => dispatch => {
     .catch(console.log);
 };
 
-export const login = (username, password, token) => dispatch => {
+export const login = (
+  username,
+  password,
+  token,
+  alert,
+  history
+) => dispatch => {
   const formData = new FormData();
   formData.append('username', username);
   formData.append('password', password);
@@ -93,6 +103,7 @@ export const login = (username, password, token) => dispatch => {
           type: LOGIN_SUCCESS,
           username: username
         });
+        history.push('/');
       } else {
       }
     })
@@ -100,6 +111,7 @@ export const login = (username, password, token) => dispatch => {
 };
 
 export const getProfile = () => dispatch => {
+  console.log('getProfile');
   dispatch({
     type: GETTING_PROFILE
   });

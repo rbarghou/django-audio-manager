@@ -16,7 +16,8 @@ const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
   username: null,
-  firstname: null
+  firstname: null,
+  test: null
 };
 
 export default function(state = initialState, action) {
@@ -63,7 +64,9 @@ export default function(state = initialState, action) {
     case VERIFY_REGISTRATION_FAILED:
       return state;
     case GETTING_PROFILE:
-      return state;
+      return {
+        ...state
+      };
     case RECEIVED_PROFILE:
       return {
         ...state,

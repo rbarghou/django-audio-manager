@@ -18,6 +18,7 @@ import {
   Typography
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useAlert } from 'react-alert';
 
 const schema = {
   username: {
@@ -66,8 +67,8 @@ const schema = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.default,
-    height: '100%'
+    backgroundColor: theme.palette.background.default
+    // height: '100%'
   },
   grid: {
     height: '100%'
@@ -108,6 +109,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   contentHeader: {
@@ -125,9 +127,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
-    }
+    justifyContent: 'center'
   },
   form: {
     paddingLeft: 100,
@@ -159,8 +159,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = props => {
-  const { history, signUp } = props;
+  const { history, signUp, isAuthenticated } = props;
 
+  const alert = useAlert();
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -171,6 +172,7 @@ const SignUp = props => {
   });
 
   useEffect(() => {
+    console.log(isAuthenticated);
     const errors = validate(formState.values, schema);
 
     setFormState(formState => ({
@@ -214,9 +216,9 @@ const SignUp = props => {
       formState.values['password1'],
       formState.values['password2'],
       Cookies.get('csrftoken'),
-      history
+      history,
+      alert
     );
-    history.push('/');
   };
 
   const hasError = field =>
@@ -305,7 +307,7 @@ const SignUp = props => {
                   label="Password"
                   name="password1"
                   onChange={handleChange}
-                  type="password1"
+                  type="password"
                   value={formState.values.password1 || ''}
                   variant="outlined"
                 />
@@ -319,7 +321,7 @@ const SignUp = props => {
                   label="Verify Password"
                   name="password2"
                   onChange={handleChange}
-                  type="password2"
+                  type="password"
                   value={formState.values.password2 || ''}
                   variant="outlined"
                 />
@@ -379,9 +381,12 @@ const SignUp = props => {
 
 SignUp.propTypes = {
   history: PropTypes.object,
-  signUp: PropTypes.func.isRequired
+  signUp: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
 
 export default withRouter(connect(mapStateToProps, { signUp })(SignUp));

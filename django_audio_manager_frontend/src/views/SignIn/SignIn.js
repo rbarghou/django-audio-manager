@@ -85,9 +85,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
-    }
+    justifyContent: 'center'
   },
   form: {
     paddingLeft: 100,
@@ -114,9 +112,6 @@ const SignIn = props => {
   const alert = useAlert();
 
   const { history, login, isAuthenticated } = props;
-  if (isAuthenticated) {
-    history.push('/');
-  }
 
   const classes = useStyles();
 
@@ -128,6 +123,10 @@ const SignIn = props => {
   });
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
+
     const errors = validate(formState.values, schema);
 
     setFormState(formState => {
@@ -163,9 +162,10 @@ const SignIn = props => {
     login(
       formState.values['username'],
       formState.values['password'],
-      Cookies.get('csrftoken')
+      Cookies.get('csrftoken'),
+      alert,
+      history
     );
-    history.push('/dashboard');
   };
 
   const hasError = field => {
@@ -247,11 +247,11 @@ const SignIn = props => {
 SignIn.propTypes = {
   history: PropTypes.object,
   login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-export default withRouter(connect(mapStateToProps, { login })(SignIn));
+export default connect(mapStateToProps, { login })(SignIn);

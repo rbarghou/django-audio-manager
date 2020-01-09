@@ -138,8 +138,8 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 REST_REGISTRATION = {
-    "REGISTER_VERIFICATION_URL": "http://localhost/api/auth/verify-registration/",
-    "RESET_PASSWORD_VERIFICATION_URL": "http://localhost/api/auth/reset-password/",
-    "REGISTER_EMAIL_VERIFICATION_URL": "http://localhost/api/auth/verify-email/",
+    "REGISTER_VERIFICATION_URL": "http://localhost/verify-registration/",
+    "RESET_PASSWORD_VERIFICATION_URL": "http://localhost/reset-password/",
+    "REGISTER_EMAIL_VERIFICATION_URL": "http://localhost/verify-email/",
     "VERIFICATION_FROM_EMAIL": "no-reply@example.com",
 }
