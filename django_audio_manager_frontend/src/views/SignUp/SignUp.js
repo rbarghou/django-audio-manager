@@ -172,7 +172,10 @@ const SignUp = props => {
   });
 
   useEffect(() => {
-    console.log(isAuthenticated);
+    if (isAuthenticated) {
+      history.push('/');
+    }
+
     const errors = validate(formState.values, schema);
 
     setFormState(formState => ({

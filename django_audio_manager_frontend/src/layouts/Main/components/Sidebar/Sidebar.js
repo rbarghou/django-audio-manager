@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
+import { Divider, Drawer, List } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -18,7 +18,10 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import { Profile, SidebarNav, UpgradePlan } from './components';
+import { Profile, SidebarNavItem, UpgradePlan } from './components';
+
+import { logout } from '../../../../actions/auth';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -52,6 +55,8 @@ const Sidebar = props => {
     isAuthenticated,
     dispatch,
     staticContext,
+    logout,
+    history,
     ...rest
   } = props;
 
@@ -67,7 +72,10 @@ const Sidebar = props => {
           },
           {
             title: 'Sign Out',
-            href: '/sign-out',
+            onClick: () => {
+              logout(Cookies.get('csrftoken'), history);
+              history.push('/');
+            },
             icon: <PersonIcon />
           }
         ]
@@ -129,7 +137,13 @@ const Sidebar = props => {
       <div {...rest} className={clsx(classes.root, className)}>
         {isAuthenticated && <Profile />}
         <Divider className={classes.divider} />
-        <SidebarNav className={classes.nav} pages={pages} />
+        <List>
+          {pages.map((page, idx) => (
+            <SidebarNavItem className={classes.nav} page={page} key={idx} />
+          ))}
+        </List>
+        <Divider className={classes.divider} />
+        <List></List>
       </div>
     </Drawer>
   );
@@ -141,11 +155,11 @@ Sidebar.propTypes = {
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool.isRequired
+  // logout: PropTypes.func.isRequred
 };
 
 const mapStateToProps = state => ({
-  ...state,
   isAuthenticated: state.auth.isAuthenticated
 });
 
-export default withRouter(connect(mapStateToProps)(Sidebar));
+export default withRouter(connect(mapStateToProps, { logout })(Sidebar));

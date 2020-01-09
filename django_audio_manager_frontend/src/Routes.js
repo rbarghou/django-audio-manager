@@ -1,5 +1,7 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
@@ -13,6 +15,7 @@ import {
   Account as AccountView,
   Settings as SettingsView,
   SignUp as SignUpView,
+  SignUpComplete as SignUpCompleteView,
   SignIn as SignInView,
   SignOut as SignOutView,
   VerifyRegistration as VerifyRegistrationView,
@@ -79,6 +82,12 @@ const Routes = () => {
         path="/sign-up"
       />
       <RouteWithLayout
+        component={SignUpCompleteView}
+        exact
+        layout={MainLayout}
+        path="/sign-up-complete"
+      />
+      <RouteWithLayout
         component={SignInView}
         exact
         layout={MainLayout}
@@ -107,4 +116,10 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+Routes.propTypes = {};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, {})(Routes);

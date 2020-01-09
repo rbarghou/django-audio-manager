@@ -58,7 +58,12 @@ export const signUp = (
     })
   }).then(response => {
     if (response.ok) {
-      history.push('/signup-complete');
+      // TODO: Dispatch successfull registration
+      history.push('/sign-up-complete');
+    } else {
+      response.json().then(data => {
+        // TODO: Dispatch failed registration
+      });
     }
   });
 };
@@ -97,14 +102,16 @@ export const login = (
     method: 'POST',
     body: formData
   })
-    .then(response => {
-      if (response.ok) {
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
         dispatch({
           type: LOGIN_SUCCESS,
           username: username
         });
         history.push('/');
       } else {
+        alert.show('Login failed');
       }
     })
     .catch(console.log);

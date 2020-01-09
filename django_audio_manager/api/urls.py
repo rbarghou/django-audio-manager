@@ -3,6 +3,7 @@ from django.urls import path, include
 import api.views as api_views
 
 urlpatterns = [
+    path("auth/login/", api_views.LoginView.as_view(), name="login"),
     path("auth/", include("django.contrib.auth.urls")),
     path('auth/', include('rest_registration.api.urls')),
     path("admin/", admin.site.urls),
