@@ -8,11 +8,11 @@ import { Grid, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.default
-    // height: '100%'
+    backgroundColor: theme.palette.background.default,
+    height: '90%'
   },
   grid: {
-    height: '100%'
+    // height: '100%'
   },
   name: {
     marginTop: theme.spacing(3),

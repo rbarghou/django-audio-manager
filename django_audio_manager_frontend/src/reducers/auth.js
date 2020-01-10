@@ -6,27 +6,24 @@ import {
   LOGGING_IN,
   LOGOUT,
   REGISTER,
-  VERIFY_REGISTRATION,
+  VERIFY_REGISTRATION_SUCCEEDED,
   VERIFY_REGISTRATION_FAILED,
   GETTING_PROFILE,
   RECEIVED_PROFILE
 } from '../actions/types';
 
 const initialState = {
-  token: localStorage.getItem('token'),
   isAuthenticated: false,
+  registrationVerified: null,
   username: null,
   firstname: null,
-  test: null
+  lastname: null
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case USER_LOADING:
-      return {
-        ...state,
-        isLoading: true
-      };
+      return { ...state, isLoading: true };
     case USER_LOADED:
       return {
         ...state,
@@ -44,29 +41,19 @@ export default function(state = initialState, action) {
         isLoading: false
       };
     case LOGIN_SUCCESS:
-      return {
-        ...state,
-        isAuthenticated: true,
-        username: action.username
-      };
+      return { ...state, isAuthenticated: true, username: action.username };
     case LOGGING_IN:
       return state;
     case LOGOUT:
-      return {
-        ...state,
-        isAuthenticated: false,
-        username: null
-      };
+      return { ...state, isAuthenticated: false, username: null };
     case REGISTER:
-      return state;
-    case VERIFY_REGISTRATION:
-      return state;
+      return { ...state, registrationVerified: null };
+    case VERIFY_REGISTRATION_SUCCEEDED:
+      return { ...state, registrationVerified: true };
     case VERIFY_REGISTRATION_FAILED:
-      return state;
+      return { ...state, registrationVerified: false };
     case GETTING_PROFILE:
-      return {
-        ...state
-      };
+      return { ...state };
     case RECEIVED_PROFILE:
       return {
         ...state,

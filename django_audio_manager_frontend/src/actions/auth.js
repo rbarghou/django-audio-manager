@@ -3,7 +3,7 @@ import {
   LOGGING_IN,
   LOGOUT,
   REGISTER,
-  VERIFY_REGISTRATION,
+  VERIFY_REGISTRATION_SUCCEEDED,
   VERIFY_REGISTRATION_FAILED,
   GETTING_PROFILE,
   RECEIVED_PROFILE
@@ -26,7 +26,7 @@ export const verifyRegistration = (
     })
   }).then(response => {
     if (response.ok) {
-      dispatch({ type: VERIFY_REGISTRATION });
+      dispatch({ type: VERIFY_REGISTRATION_SUCCEEDED });
     } else {
       dispatch({ type: VERIFY_REGISTRATION_FAILED });
     }
