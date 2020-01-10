@@ -10,14 +10,12 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
   Link,
   FormHelperText,
   Checkbox,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useAlert } from 'react-alert';
 
 const schema = {
@@ -183,7 +181,7 @@ const SignUp = props => {
       isValid: errors ? false : true,
       errors: errors || {}
     }));
-  }, [formState.values]);
+  }, [formState.values, isAuthenticated, history]);
 
   const handleChange = event => {
     event.persist();
@@ -202,10 +200,6 @@ const SignUp = props => {
         [event.target.name]: true
       }
     }));
-  };
-
-  const handleBack = () => {
-    history.goBack();
   };
 
   const handleSignUp = event => {

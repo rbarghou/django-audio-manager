@@ -1,22 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Cookies from 'js-cookie';
 
 import PropTypes from 'prop-types';
-import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Grid,
-  Button,
-  IconButton,
-  TextField,
-  Link,
-  FormHelperText,
-  Checkbox,
-  Typography
-} from '@material-ui/core';
-import { useAlert } from 'react-alert';
+import { Grid, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,9 +49,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUpComplete = props => {
-  const { history } = props;
-
-  const alert = useAlert();
   const classes = useStyles();
 
   return (

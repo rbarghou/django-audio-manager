@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import { RouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
@@ -17,7 +16,6 @@ import {
   SignUp as SignUpView,
   SignUpComplete as SignUpCompleteView,
   SignIn as SignInView,
-  SignOut as SignOutView,
   VerifyRegistration as VerifyRegistrationView,
   NotFound as NotFoundView,
   Landing as LandingView
@@ -92,12 +90,6 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/sign-in"
-      />
-      <RouteWithLayout
-        component={SignOutView}
-        exact
-        layout={MainLayout}
-        path="/sign-out"
       />
       <RouteWithLayout
         component={VerifyRegistrationView}

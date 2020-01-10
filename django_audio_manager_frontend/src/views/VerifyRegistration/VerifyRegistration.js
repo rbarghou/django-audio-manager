@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { verifyRegistration } from '../../actions/auth';

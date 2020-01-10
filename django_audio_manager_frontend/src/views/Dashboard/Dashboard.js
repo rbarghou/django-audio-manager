@@ -4,17 +4,6 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-import {
-  Budget,
-  TotalUsers,
-  TasksProgress,
-  TotalProfit,
-  LatestSales,
-  UsersByDevice,
-  LatestProducts,
-  LatestOrders
-} from './components';
-
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(4)

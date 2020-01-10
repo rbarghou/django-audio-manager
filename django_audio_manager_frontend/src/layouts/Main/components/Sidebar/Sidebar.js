@@ -6,19 +6,10 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer, List } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import { Profile, SidebarNavItem, UpgradePlan } from './components';
+import { Profile, SidebarNavItem } from './components';
 
 import { logout } from '../../../../actions/auth';
 import Cookies from 'js-cookie';
