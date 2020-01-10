@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -22,15 +23,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Profile = props => {
-  const { className, ...rest } = props;
+  const { className, user, ...rest } = props;
 
   const classes = useStyles();
-
-  const user = {
-    // name: 'Shen Zhi',
-    // avatar: '/images/avatars/avatar_11.png',
-    // bio: 'Brain Director'
-  };
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -53,4 +48,10 @@ Profile.propTypes = {
   className: PropTypes.string
 };
 
-export default Profile;
+const mapStateToProps = state => ({
+  user: {
+    name: state.auth.username
+  }
+});
+
+export default connect(mapStateToProps, {})(Profile);

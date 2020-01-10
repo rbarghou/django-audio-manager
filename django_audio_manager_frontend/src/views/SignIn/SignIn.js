@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Grid,
-  Button,
-  IconButton,
-  TextField,
-  Link,
-  Typography
-} from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import { Grid, Button, TextField, Link, Typography } from '@material-ui/core';
+import { login } from '../../actions/auth';
+import { useAlert } from 'react-alert';
+import Cookies from 'js-cookie';
 
 const schema = {
-  email: {
+  username: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
     length: {
       maximum: 64
     }
@@ -92,9 +85,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
-    }
+    justifyContent: 'center'
   },
   form: {
     paddingLeft: 100,
@@ -118,7 +109,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-  const { history } = props;
+  const alert = useAlert();
+
+  const { history, login, isAuthenticated } = props;
 
   const classes = useStyles();
 
@@ -130,18 +123,20 @@ const SignIn = props => {
   });
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
+
     const errors = validate(formState.values, schema);
 
-    setFormState(formState => ({
-      ...formState,
-      isValid: errors ? false : true,
-      errors: errors || {}
-    }));
-  }, [formState.values]);
-
-  const handleBack = () => {
-    history.goBack();
-  };
+    setFormState(formState => {
+      return {
+        ...formState,
+        isValid: errors ? false : true,
+        errors: errors || {}
+      };
+    });
+  }, [formState.values, isAuthenticated, history]);
 
   const handleChange = event => {
     event.persist();
@@ -164,11 +159,20 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    login(
+      formState.values['username'],
+      formState.values['password'],
+      Cookies.get('csrftoken'),
+      alert,
+      history
+    );
   };
 
-  const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+  const hasError = field => {
+    const x =
+      formState.touched[field] && formState.errors[field] ? true : false;
+    return x;
+  };
 
   return (
     <div className={classes.root}>
@@ -189,16 +193,16 @@ const SignIn = props => {
                 </Typography>
                 <TextField
                   className={classes.textField}
-                  error={hasError('email')}
+                  error={hasError('username')}
                   fullWidth
                   helperText={
-                    hasError('email') ? formState.errors.email[0] : null
+                    hasError('username') ? formState.errors.username[0] : null
                   }
-                  label="Email address"
-                  name="email"
+                  label="Username"
+                  name="username"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.email || ''}
+                  value={formState.values.username || ''}
                   variant="outlined"
                 />
                 <TextField
@@ -241,7 +245,14 @@ const SignIn = props => {
 };
 
 SignIn.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default withRouter(SignIn);
+const mapStateToProps = state => ({
+  ...state,
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { login })(SignIn);

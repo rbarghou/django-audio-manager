@@ -1,21 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signUp } from '../../actions/auth';
+import Cookies from 'js-cookie';
+
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
   TextField,
   Link,
   FormHelperText,
   Checkbox,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useAlert } from 'react-alert';
 
 const schema = {
+  username: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
   firstName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
@@ -35,11 +44,18 @@ const schema = {
       maximum: 64
     }
   },
-  password: {
+  password1: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 128
     }
+  },
+  password2: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 128
+    },
+    equality: 'password1'
   },
   policy: {
     presence: { allowEmpty: false, message: 'is required' },
@@ -49,8 +65,8 @@ const schema = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.default,
-    height: '100%'
+    backgroundColor: theme.palette.background.default
+    // height: '100%'
   },
   grid: {
     height: '100%'
@@ -91,6 +107,7 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   contentHeader: {
@@ -108,9 +125,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('md')]: {
-      justifyContent: 'center'
-    }
+    justifyContent: 'center'
   },
   form: {
     paddingLeft: 100,
@@ -142,8 +157,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = props => {
-  const { history } = props;
+  const { history, signUp, isAuthenticated } = props;
 
+  const alert = useAlert();
   const classes = useStyles();
 
   const [formState, setFormState] = useState({
@@ -154,6 +170,10 @@ const SignUp = props => {
   });
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
+
     const errors = validate(formState.values, schema);
 
     setFormState(formState => ({
@@ -161,7 +181,7 @@ const SignUp = props => {
       isValid: errors ? false : true,
       errors: errors || {}
     }));
-  }, [formState.values]);
+  }, [formState.values, isAuthenticated, history]);
 
   const handleChange = event => {
     event.persist();
@@ -182,13 +202,19 @@ const SignUp = props => {
     }));
   };
 
-  const handleBack = () => {
-    history.goBack();
-  };
-
   const handleSignUp = event => {
     event.preventDefault();
-    history.push('/');
+    signUp(
+      formState.values['username'],
+      formState.values['firstName'],
+      formState.values['lastName'],
+      formState.values['email'],
+      formState.values['password1'],
+      formState.values['password2'],
+      Cookies.get('csrftoken'),
+      history,
+      alert
+    );
   };
 
   const hasError = field =>
@@ -211,6 +237,20 @@ const SignUp = props => {
                 <Typography className={classes.title} variant="h2">
                   Create new account
                 </Typography>
+                <TextField
+                  className={classes.textField}
+                  error={hasError('username')}
+                  fullWidth
+                  helperText={
+                    hasError('username') ? formState.errors.username[0] : null
+                  }
+                  label="Username"
+                  name="username"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.username || ''}
+                  variant="outlined"
+                />
                 <TextField
                   className={classes.textField}
                   error={hasError('firstName')}
@@ -255,18 +295,33 @@ const SignUp = props => {
                 />
                 <TextField
                   className={classes.textField}
-                  error={hasError('password')}
+                  error={hasError('password1')}
                   fullWidth
                   helperText={
-                    hasError('password') ? formState.errors.password[0] : null
+                    hasError('password1') ? formState.errors.password1[0] : null
                   }
                   label="Password"
-                  name="password"
+                  name="password1"
                   onChange={handleChange}
                   type="password"
-                  value={formState.values.password || ''}
+                  value={formState.values.password1 || ''}
                   variant="outlined"
                 />
+                <TextField
+                  className={classes.textField}
+                  error={hasError('password2')}
+                  fullWidth
+                  helperText={
+                    hasError('password2') ? formState.errors.password2[0] : null
+                  }
+                  label="Verify Password"
+                  name="password2"
+                  onChange={handleChange}
+                  type="password"
+                  value={formState.values.password2 || ''}
+                  variant="outlined"
+                />
+
                 <div className={classes.policy}>
                   <Checkbox
                     checked={formState.values.policy || false}
@@ -321,7 +376,13 @@ const SignUp = props => {
 };
 
 SignUp.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  signUp: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default withRouter(SignUp);
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default withRouter(connect(mapStateToProps, { signUp })(SignUp));

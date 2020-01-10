@@ -5,6 +5,12 @@ import { Chart } from 'react-chartjs-2';
 import { ThemeProvider } from '@material-ui/styles';
 import validate from 'validate.js';
 
+import { Provider } from 'react-redux';
+import store from './store';
+
+import { Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
+
 import { chartjs } from './helpers';
 import theme from './theme';
 import 'react-perfect-scrollbar/dist/css/styles.css';
@@ -23,14 +29,25 @@ validate.validators = {
   ...validators
 };
 
+// Alert Options
+const alertOptions = {
+  timeout: 5000,
+  offset: '60px',
+  position: 'top center'
+};
+
 export default class App extends Component {
   render() {
     return (
-      <ThemeProvider theme={theme}>
-        <Router history={browserHistory}>
-          <Routes />
-        </Router>
-      </ThemeProvider>
+      <Provider store={store}>
+        <AlertProvider template={AlertTemplate} {...alertOptions}>
+          <ThemeProvider theme={theme}>
+            <Router history={browserHistory}>
+              <Routes />
+            </Router>
+          </ThemeProvider>
+        </AlertProvider>
+      </Provider>
     );
   }
 }

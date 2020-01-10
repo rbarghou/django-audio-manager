@@ -1,22 +1,18 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
+import { Divider, Drawer, List } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
-import { Profile, SidebarNav, UpgradePlan } from './components';
+import { Profile, SidebarNavItem } from './components';
+
+import { logout } from '../../../../actions/auth';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -42,57 +38,50 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Sidebar = props => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const {
+    open,
+    variant,
+    onClose,
+    className,
+    isAuthenticated,
+    dispatch,
+    staticContext,
+    logout,
+    history,
+    ...rest
+  } = props;
 
   const classes = useStyles();
 
   const pages = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <DashboardIcon />
-    },
-    // {
-    //   title: 'Users',
-    //   href: '/users',
-    //   icon: <PeopleIcon />
-    // },
-    // {
-    //   title: 'Products',
-    //   href: '/products',
-    //   icon: <ShoppingBasketIcon />
-    // },
-    {
-      title: 'Sign In',
-      href: '/sign-in',
-      icon: <PersonIcon />
-    },
-    {
-      title: 'Sign Up',
-      href: '/sign-up',
-      icon: <PersonAddIcon />
-    }
-
-    // {
-    //   title: 'Typography',
-    //   href: '/typography',
-    //   icon: <TextFieldsIcon />
-    // },
-    // {
-    //   title: 'Icons',
-    //   href: '/icons',
-    //   icon: <ImageIcon />
-    // }
-    // {
-    //   title: 'Account',
-    //   href: '/account',
-    //   icon: <AccountBoxIcon />
-    // },
-    // {
-    //   title: 'Settings',
-    //   href: '/settings',
-    //   icon: <SettingsIcon />
-    // }
+    ...((isAuthenticated
+      ? [
+          {
+            title: 'Dashboard',
+            href: '/dashboard',
+            icon: <DashboardIcon />
+          },
+          {
+            title: 'Sign Out',
+            onClick: () => {
+              logout(Cookies.get('csrftoken'), history);
+              history.push('/');
+            },
+            icon: <PersonIcon />
+          }
+        ]
+      : [
+          {
+            title: 'Sign In',
+            href: '/sign-in',
+            icon: <PersonIcon />
+          },
+          {
+            title: 'Sign Up',
+            href: '/sign-up',
+            icon: <PersonAddIcon />
+          }
+        ]): [])
   ];
 
   return (
@@ -103,9 +92,13 @@ const Sidebar = props => {
       open={open}
       variant={variant}>
       <div {...rest} className={clsx(classes.root, className)}>
-        <Profile />
+        {isAuthenticated && <Profile />}
         <Divider className={classes.divider} />
-        <SidebarNav className={classes.nav} pages={pages} />
+        <List>
+          {pages.map((page, idx) => (
+            <SidebarNavItem className={classes.nav} page={page} key={idx} />
+          ))}
+        </List>
       </div>
     </Drawer>
   );
@@ -115,7 +108,12 @@ Sidebar.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
-  variant: PropTypes.string.isRequired
+  variant: PropTypes.string.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default Sidebar;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default withRouter(connect(mapStateToProps, { logout })(Sidebar));
