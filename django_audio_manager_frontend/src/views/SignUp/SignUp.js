@@ -204,7 +204,6 @@ const SignUp = props => {
 
   const handleSignUp = event => {
     event.preventDefault();
-    console.log(formState.values);
     signUp(
       formState.values['username'],
       formState.values['firstName'],

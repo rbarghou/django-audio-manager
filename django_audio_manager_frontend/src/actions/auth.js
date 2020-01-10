@@ -62,7 +62,9 @@ export const signUp = (
       history.push('/sign-up-complete');
     } else {
       response.json().then(data => {
-        // TODO: Dispatch failed registration
+        for (var key in data) {
+          alert.show(data[key]);
+        }
       });
     }
   });
@@ -118,7 +120,6 @@ export const login = (
 };
 
 export const getProfile = () => dispatch => {
-  console.log('getProfile');
   dispatch({
     type: GETTING_PROFILE
   });
