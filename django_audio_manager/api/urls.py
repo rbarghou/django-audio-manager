@@ -5,7 +5,7 @@ import api.views as api_views
 urlpatterns = [
     path("auth/login/", api_views.LoginView.as_view(), name="login"),
     path("auth/", include("django.contrib.auth.urls")),
-    path('auth/', include('rest_registration.api.urls')),
+    path("auth/", include("rest_registration.api.urls")),
     path("admin/", admin.site.urls),
     path("ping", api_views.PingView.as_view(), name="api_ping"),
     path("profile", api_views.ProfileView.as_view(), name="profile"),

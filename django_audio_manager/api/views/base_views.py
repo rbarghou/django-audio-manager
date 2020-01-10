@@ -19,7 +19,7 @@ class ProfileView(APIView):
                 "username": request.user.username,
                 "is_authenticated": request.user.is_authenticated,
                 "firstname": request.user.first_name,
-                "lastname": request.user.last_name
+                "lastname": request.user.last_name,
             }
         else:
             content = self.ANONYMOUS_PROFILE
