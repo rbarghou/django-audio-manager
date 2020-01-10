@@ -136,7 +136,7 @@ const SignIn = props => {
         errors: errors || {}
       };
     });
-  }, [formState.values]);
+  }, [formState.values, isAuthenticated, history]);
 
   const handleChange = event => {
     event.persist();
