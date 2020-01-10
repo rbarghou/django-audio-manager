@@ -1,0 +1,16 @@
+EP00-US07 - Forgot My password
+
+As a user I would like to be able to reset my password so I can still use the service even if I've forgotten my password.
+
+Acceptance Criteria
+
+1. There is a "forgot my password?" link on the signIn page.
+2. The forgot my password page accepts an email.
+    a. If the email is correct then the existing registeration system sends an email with the appropriate link.
+    b. there is no difference in behavior whether the email is valid or not.
+3. The forgot my password page redirects to a static page with some "if the email was valid..." copy on it.
+4. (If the email was valid) there is an email sent to the user with a link to the appropriate
+    reset password page.
+5. The reset password page provides a new password UI with appropriate fields listed.
+6. When the form is filled out successfully, then the password is reset and the user is
+    redirected to the login screen.

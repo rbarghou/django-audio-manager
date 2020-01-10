@@ -1,0 +1,8 @@
+EP00-US06 - Password Reset
+
+As a user I want to change my password so that I can improve my security.
+
+Acceptance Criteria:
+
+1. There is a settings page with a Password change Card.
+2. The password change ui integrates with the existing password change backend (if possible)
