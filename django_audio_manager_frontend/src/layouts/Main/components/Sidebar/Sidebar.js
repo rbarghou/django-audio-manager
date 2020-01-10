@@ -54,7 +54,7 @@ const Sidebar = props => {
   const classes = useStyles();
 
   const pages = [
-    ...(isAuthenticated
+    ...((isAuthenticated
       ? [
           {
             title: 'Dashboard',
@@ -70,19 +70,7 @@ const Sidebar = props => {
             icon: <PersonIcon />
           }
         ]
-      : []),
-    // {
-    //   title: 'Users',
-    //   href: '/users',
-    //   icon: <PeopleIcon />
-    // },
-    // {
-    //   title: 'Products',
-    //   href: '/products',
-    //   icon: <ShoppingBasketIcon />
-    // },
-    ...(!isAuthenticated
-      ? [
+      : [
           {
             title: 'Sign In',
             href: '/sign-in',
@@ -93,29 +81,7 @@ const Sidebar = props => {
             href: '/sign-up',
             icon: <PersonAddIcon />
           }
-        ]
-      : [])
-
-    // {
-    //   title: 'Typography',
-    //   href: '/typography',
-    //   icon: <TextFieldsIcon />
-    // },
-    // {
-    //   title: 'Icons',
-    //   href: '/icons',
-    //   icon: <ImageIcon />
-    // }
-    // {
-    //   title: 'Account',
-    //   href: '/account',
-    //   icon: <AccountBoxIcon />
-    // },
-    // {
-    //   title: 'Settings',
-    //   href: '/settings',
-    //   icon: <SettingsIcon />
-    // }
+        ]): [])
   ];
 
   return (
@@ -133,8 +99,6 @@ const Sidebar = props => {
             <SidebarNavItem className={classes.nav} page={page} key={idx} />
           ))}
         </List>
-        <Divider className={classes.divider} />
-        <List></List>
       </div>
     </Drawer>
   );
@@ -146,7 +110,6 @@ Sidebar.propTypes = {
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool.isRequired
-  // logout: PropTypes.func.isRequred
 };
 
 const mapStateToProps = state => ({

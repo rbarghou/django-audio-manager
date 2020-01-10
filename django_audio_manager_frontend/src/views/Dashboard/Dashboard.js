@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { LatestOrders } from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,10 +17,11 @@ const Dashboard = props => {
   const { isAuthenticated } = props;
   return (
     <div className={classes.root}>
-      <Typography>
-        isAuthenticated: {!isAuthenticated ? 'Unauthenticated' : 'Logged In'}
-      </Typography>
-      <Grid container spacing={4}></Grid>
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+          <LatestOrders />
+        </Grid>
+      </Grid>
     </div>
   );
 };
