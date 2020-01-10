@@ -133,3 +133,5 @@ dmypy.json
 paper-dashboard-react-master.zip
 
 .idea
+
+static/
