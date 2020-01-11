@@ -104,38 +104,47 @@ export const login = (
     method: 'POST',
     body: formData
   })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        dispatch({
-          type: LOGIN_SUCCESS,
-          username: username
+    .then(response => {
+      if (response.ok) {
+        response.json().then(data => {
+          if (data.success) {
+            dispatch({
+              type: LOGIN_SUCCESS,
+              username: username
+            });
+            history.push('/');
+          } else {
+            alert.show('Login failed');
+          }
         });
-        history.push('/');
       } else {
-        alert.show('Login failed');
+        alert.show('The login server is experiencing problems.');
       }
     })
     .catch(console.log);
 };
 
-export const getProfile = () => dispatch => {
+export const getProfile = alert => dispatch => {
   dispatch({
     type: GETTING_PROFILE
   });
   fetch('/api/profile', {
     method: 'GET'
-  })
-    .then(response => response.json())
-    .then(data => {
-      const { username, firstname, lastname, email, is_authenticated } = data;
-      dispatch({
-        type: RECEIVED_PROFILE,
-        username: username,
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        is_authenticated: is_authenticated
+  }).then(response => {
+    if (response.ok) {
+      response.json().then(data => {
+        const { username, firstname, lastname, email, is_authenticated } = data;
+        dispatch({
+          type: RECEIVED_PROFILE,
+          username: username,
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          is_authenticated: is_authenticated
+        });
       });
-    });
+    } else {
+      alert.show('The server is temporarily unavailable.');
+    }
+  });
 };

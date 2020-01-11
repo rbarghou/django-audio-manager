@@ -7,6 +7,7 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import { getProfile } from '../../actions/auth';
+import { useAlert } from 'react-alert';
 
 import { Sidebar, Topbar, Footer } from './components';
 
@@ -28,15 +29,13 @@ const useStyles = makeStyles(theme => ({
 
 const Main = props => {
   const { children, getProfile } = props;
-  useEffect(() => {
-    getProfile();
-  });
 
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'), {
     defaultMatches: true
   });
+  const alert = useAlert();
 
   const [openSidebar, setOpenSidebar] = useState(false);
 
@@ -49,6 +48,10 @@ const Main = props => {
   };
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar;
+
+  useEffect(() => {
+    getProfile(alert);
+  });
 
   return (
     <div
