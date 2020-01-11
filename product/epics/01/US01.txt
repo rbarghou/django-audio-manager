@@ -1,0 +1,12 @@
+EP01-US01 - Upload files
+
+As a user I want to manage audio files so I can have them available later.
+
+AC:
+
+1. All the appropriate Front end views for rest
+  - Create
+  - List
+  - View
+  - Delete
+2. Only the creator of a file can access the file even with a deep link.

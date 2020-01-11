@@ -1,0 +1,8 @@
+Epic 01 - Core audio functionality
+
+This epic is focused on core functionality around uploading and viewing audio.
+
+The goal of this epic is to make sure that individual users can manage a
+collection of audio files.
+
+This should include normal crud operations and normal permissions schemes.
