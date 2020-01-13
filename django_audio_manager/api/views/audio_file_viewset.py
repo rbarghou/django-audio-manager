@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class AudioFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = AudioFile
-        fields = ["file", "uploaded_at"]
+        fields = ["id", "file", "uploaded_at"]
 
 
 class IsOwner(BasePermission):
