@@ -1,5 +1,5 @@
 from ..models import AudioFile
-from rest_framework import viewsets, serializers
+from rest_framework import viewsets, serializers, mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, BasePermission
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class AudioFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = AudioFile
-        fields = ["user", "file", "uploaded_at"]
+        fields = ["file", "uploaded_at"]
 
 
 class IsOwner(BasePermission):
@@ -21,11 +21,19 @@ class IsOwner(BasePermission):
         return obj.user == request.user
 
 
-class AudioFileViewset(viewsets.ModelViewSet):
+# Same as ModelAPIView except no Update.
+class AudioFileViewset(mixins.CreateModelMixin,
+                       mixins.DestroyModelMixin,
+                       mixins.ListModelMixin,
+                       mixins.RetrieveModelMixin,
+                       viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated, IsOwner]
 
     serializer_class = AudioFileSerializer
     queryset = AudioFile.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     def get_queryset(self):
         return AudioFile.objects.filter(user=self.request.user)
@@ -38,4 +46,4 @@ class AudioFileViewset(viewsets.ModelViewSet):
         if af:
             return HttpResponse("Access Granted")
         else:
-            return HttpResponse(status=401)
+            return HttpResponse(status=403)
