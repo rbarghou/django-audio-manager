@@ -26,6 +26,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 import mockData from './data';
 import { StatusBullet } from 'components';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -62,7 +63,12 @@ const AudioFiles = props => {
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
         action={
-          <Button color="primary" size="small" variant="outlined">
+          <Button
+            to="/upload"
+            component={RouterLink}
+            color="primary"
+            size="small"
+            variant="outlined">
             New entry
           </Button>
         }

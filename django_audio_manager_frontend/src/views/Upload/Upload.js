@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 const Upload = props => {
   const classes = useStyles();
 
-  const { isAuthenticated, getFiles } = props;
+  const { history, isAuthenticated, getFiles } = props;
   useEffect(() => {
     getFiles();
   });
@@ -55,13 +56,24 @@ const Upload = props => {
     fetch('/api/audiofile/', {
       method: 'POST',
       headers: {
-        // 'Content-Type':
-        //   'multipart/form-data; boundary=----WebKitFormBoundarysvBIN3WVKdgmYOH5',
         'X-CSRFToken': Cookies.get('csrftoken')
       },
       body: fd
-    });
-    console.log(file);
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          // TODO: Handle error case
+        }
+      })
+      .then(data => {
+        // TODO: Handle success case
+        history.push('/dashboard');
+      })
+      .catch(error => {
+        // TODO: Handle error case
+      });
   };
 
   return (
@@ -139,4 +151,4 @@ const mapStateToProps = state => {
   return { isAuthenticated: state.auth.isAuthenticated };
 };
 
-export default connect(mapStateToProps, { getFiles })(Upload);
+export default withRouter(connect(mapStateToProps, { getFiles })(Upload));
