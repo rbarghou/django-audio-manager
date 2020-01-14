@@ -27,6 +27,8 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import mockData from './data';
 import { StatusBullet } from 'components';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -48,16 +50,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const statusColors = {
-  delivered: 'success',
-  pending: 'info',
-  refunded: 'danger'
-};
-
 const AudioFiles = props => {
-  const { className, files, ...rest } = props;
+  const { className, files, getFiles, ...rest } = props;
 
   const classes = useStyles();
+
+  const handleDelete = file_id => {
+    fetch('/api/audiofile/' + file_id + '/', {
+      method: 'DELETE',
+      headers: {
+        'X-CSRFToken': Cookies.get('csrftoken')
+      }
+    }).then(response => {
+      if (response.ok) {
+        getFiles();
+      } else {
+        // TODO: handle case
+      }
+    });
+  };
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -89,6 +100,7 @@ const AudioFiles = props => {
                       </TableSortLabel>
                     </Tooltip>
                   </TableCell>
+                  <TableCell>Delete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -96,6 +108,11 @@ const AudioFiles = props => {
                   <TableRow hover key={file.id}>
                     <TableCell>{file.file}</TableCell>
                     <TableCell>{file.uploaded_at}</TableCell>
+                    <TableCell>
+                      <Button onClick={() => handleDelete(file.id)}>
+                        <DeleteIcon />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -115,11 +132,12 @@ const AudioFiles = props => {
 
 AudioFiles.propTypes = {
   className: PropTypes.string,
-  files: PropTypes.array.isRequired
+  files: PropTypes.array.isRequired,
+  getFiles: PropTypes.func
 };
 
 const mapStateToProps = state => ({
   files: state.audio.files
 });
 
-export default connect(mapStateToProps, {})(AudioFiles);
+export default connect(mapStateToProps, { getFiles })(AudioFiles);

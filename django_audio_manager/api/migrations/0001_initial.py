@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='AudioFile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file', models.FileField(upload_to=api.models.audio_file_upload_path)),
+                ('file', models.FileField(upload_to=api.models.audio_file_upload_path, validators=[api.models.validate_file_extension])),
                 ('uploaded_at', models.DateTimeField(auto_now_add=True)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
