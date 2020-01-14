@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_registration",
+    "api"
 ]
 
 MIDDLEWARE = [
@@ -124,7 +125,7 @@ USE_TZ = True
 STATIC_URL = "/api/static/"
 STATIC_ROOT = "/app/static/"
 
-MEDIA_URL = "/api/media/"
+MEDIA_URL = "http://localhost/api/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
