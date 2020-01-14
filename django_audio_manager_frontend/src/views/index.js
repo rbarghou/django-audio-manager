@@ -10,4 +10,5 @@ export { default as SignUpComplete } from './SignUpComplete';
 export { default as VerifyRegistration } from './VerifyRegistration';
 export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
+export { default as Upload } from './Upload';
 export { default as Landing } from './Landing';
