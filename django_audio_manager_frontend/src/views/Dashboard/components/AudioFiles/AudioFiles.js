@@ -20,7 +20,8 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  TableSortLabel
+  TableSortLabel,
+  Typography
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
@@ -29,6 +30,9 @@ import { StatusBullet } from 'components';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Cookies from 'js-cookie';
+
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -70,6 +74,11 @@ const AudioFiles = props => {
     });
   };
 
+  const getName = file => {
+    const x = file.file.split('/');
+    return x[x.length - 1];
+  };
+
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
       <CardHeader
@@ -92,7 +101,8 @@ const AudioFiles = props => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>URL</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Player</TableCell>
                   <TableCell sortDirection="desc">
                     <Tooltip enterDelay={300} title="Sort">
                       <TableSortLabel active direction="desc">
@@ -106,7 +116,18 @@ const AudioFiles = props => {
               <TableBody>
                 {files.map(file => (
                   <TableRow hover key={file.id}>
-                    <TableCell>{file.file}</TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1">
+                        {getName(file)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <AudioPlayer
+                        src={file.file}
+                        onPlay={e => console.log('onPlay')}
+                        // other props here
+                      />
+                    </TableCell>
                     <TableCell>{file.uploaded_at}</TableCell>
                     <TableCell>
                       <Button onClick={() => handleDelete(file.id)}>
