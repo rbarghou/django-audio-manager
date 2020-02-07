@@ -1,4 +1,4 @@
-Django==2.2.8
+Django==2.2.9,<3.0.0
 psycopg2==2.8.4
 djangorestframework==3.9.1
 django-rest-registration==0.5.3
