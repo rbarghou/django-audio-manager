@@ -1,5 +1,5 @@
 Django>=2.2.10,<3.0.0
 psycopg2==2.8.4
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 django-rest-registration==0.5.3
 uwsgi==2.0.18
